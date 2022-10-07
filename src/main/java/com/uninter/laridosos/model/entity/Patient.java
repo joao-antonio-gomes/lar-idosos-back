@@ -35,9 +35,8 @@ public class Patient {
     @ColumnDefault("true")
     private boolean active;
 
-
-    @ManyToMany(mappedBy = "patients")
-    private Set<Responsible> responsibles;
+    @OneToMany(mappedBy = "patient")
+    private Set<Treatment> treatments;
 
     public Patient update(Patient patientRequest) {
         if (patientRequest.getName() != null) {

@@ -6,8 +6,12 @@ import lombok.*;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
 
-import static com.fasterxml.jackson.annotation.JsonInclude.*;
+import static com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 @Getter
 @Setter
@@ -22,8 +26,9 @@ public class PatientGetResponseDto implements Serializable {
     private String cpf;
     private LocalDate birthDate;
     private String phone;
-    private String gender;
+    private Integer gender;
     private boolean active;
+    private List<TreatmentGetResponseDto> treatments;
 
     public static PatientGetResponseDto fromEntityToDto(Patient patient) {
         return PatientGetResponseDto.builder()
@@ -32,8 +37,9 @@ public class PatientGetResponseDto implements Serializable {
                 .cpf(patient.getCpf())
                 .birthDate(patient.getBirthDate())
                 .phone(patient.getPhone())
-                .gender(patient.getGender().getDescription())
+                .gender(patient.getGender().ordinal())
                 .active(patient.isActive())
+                .treatments(new ArrayList<>(patient.getTreatments()).stream().map(TreatmentGetResponseDto::toResponseDto).sorted(Comparator.comparing(TreatmentGetResponseDto::getId)).collect(Collectors.toList()))
                 .build();
     }
 }

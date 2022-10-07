@@ -1,10 +1,8 @@
 package com.uninter.laridosos.model.entity;
 
-import com.uninter.laridosos.enumerator.DosageTypeEnum;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.Set;
 
 @Getter
 @Setter
@@ -20,22 +18,18 @@ public class Medicine {
 
     @Column(nullable = false)
     private String name;
-    @Column(nullable = false)
+    @Column(nullable = false, length = 1000)
     private String description;
     @Column(nullable = false)
-    private String dosage;
+    private Integer concentration;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "dosage_type", nullable = false)
-    private DosageTypeEnum dosageType;
-
-    @Column(name = "hour_interval", nullable = false)
-    private Integer hourInterval;
-
-    @ManyToOne
-    @JoinColumn(name = "patient_id", referencedColumnName = "id")
-    private Patient patient;
-
-    @ManyToMany(mappedBy = "medicines")
-    private Set<Treatment> treatments;
+    public Medicine update(Medicine medicineRequest) {
+        if (medicineRequest.getName() != null) {
+            this.name = medicineRequest.getName();
+        }
+        if (medicineRequest.getConcentration() != null) {
+            this.concentration = medicineRequest.getConcentration();
+        }
+        return this;
+    }
 }

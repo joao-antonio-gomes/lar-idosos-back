@@ -23,18 +23,14 @@ public class Treatment {
     @Column(name = "end_date")
     private LocalDate endDate;
 
-    @ManyToOne
-    @JoinColumn(name = "disease_id", referencedColumnName = "id", nullable = false)
-    private Disease disease;
+    @Column(nullable = false)
+    private String disease;
 
     @ManyToOne
     @JoinColumn(name = "patient_id", referencedColumnName = "id", nullable = false)
     private Patient patient;
 
-    @ManyToMany
-    @JoinTable(name = "treatment_medicine",
-            joinColumns = @JoinColumn(name = "treatment_id"),
-            inverseJoinColumns = @JoinColumn(name = "medicine_id"))
-    private Set<Medicine> medicines;
+    @OneToMany(mappedBy = "treatment")
+    private Set<MedicineTreatment> medicinesTreatment;
 
 }
